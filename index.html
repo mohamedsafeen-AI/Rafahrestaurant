@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RAFAH RESTAURANT</title>
+  <meta name="description" content="A 3D restaurant website built with only HTML, CSS, and JS (no frameworks)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+   .nav strong{
+    font-size:45px;
+    font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    display:flex;
+    margin-left:50px;
+    margin-top:40px;
+   }
+    :root{
+      --bg:#0b0d12; 
+      --card:#10131a; 
+      --ink:#e6e6ea;
+      --muted:#9aa4b2;
+      --accent:#e0b26b; /* golden */
+      --accent-2:#f25757; /* coral */
+      --glass: rgba(255,255,255,.08);
+      --glass-2: rgba(255,255,255,.06);
+      --shadow: 0 10px 30px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.03);
+      --radius: 22px;
+      --perspective: 1200px;
+    }
+    * { box-sizing: border-box }
+    html,body { height: 100% }
+    body{
+      margin:0; background: radial-gradient(1200px 800px at 70% -20%, #1b1f2a, #0b0d12 60%);
+      color:var(--ink); font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      overflow-x:hidden;
+      letter-spacing:.2px;
+    }
+    a{ color:inherit; text-decoration: none }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px;  }
+
+    /* =====================  Top Navigation  ===================== */
+    .nav{
+      position: fixed; top: 16px; left: 0; right: 0; z-index: 50;
+      display:flex; align-items:center; justify-content: center;
+      pointer-events:none; /* allow hero to capture pointer */
+    }
+    .nav-inner{
+      pointer-events:all;
+      display:flex; align-items:center; gap: 16px; padding: 10px 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08)) ;
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,.12); border-radius: 999px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      margin-right:200px;
+      margin-top:30px;
+    }
+    .brand{ display:flex; align-items:center; gap: 10px; padding: 6px 12px; border-radius: 999px;}
+    .brand img{ width: 26px; height: 26px; filter: drop-shadow(0 6px 10px rgba(0,0,0,.4)); border-radius: 50%;}
+    .brand strong{ font-family: "DM Serif Display", serif; letter-spacing:.6px; font-size:20px }
+
+    .nav a.link{
+      padding: 8px 14px; border-radius: 999px; font-weight:600; font-size: 14px;
+      opacity:.9; transition: .25s ease transform, .25s ease opacity, .25s ease background;
+    }
+    .nav a.link:hover{ opacity:1; transform: translateY(-2px);
+      background: rgba(255,255,255,.06);
+    }
+    .cta-btn{
+      margin-left: 8px; padding: 10px 16px; border-radius: 999px; font-weight:700; font-size:14px;
+      border:1px solid rgba(255,255,255,.15);
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+      box-shadow: var(--shadow);
+    }
+
+    /* =====================  HERO with 3D Scene  ===================== */
+    .hero{
+      position:relative; min-height: 92vh; display:grid; place-items:center; overflow:hidden;
+    }
+    .hero-bg{
+      position:absolute; inset: -20vh -10vw -20vh -10vw; pointer-events:none;
+      background: radial-gradient(800px 800px at 15% 10%, rgba(224,178,107,.18), transparent 50%),
+                  radial-gradient(1000px 800px at 90% 20%, rgba(242,87,87,.18), transparent 50%);
+      filter: blur(40px);
+    }
+    .hero .wrap{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 24px; align-items:center;margin-top:150px; }
+
+    .headline{
+      transform-style: preserve-3d; perspective: var(--perspective);
+    }
+    .headline h1{
+      font-family: "DM Serif Display", serif; font-size: clamp(30px, 7vw, 60px); line-height: 1.02; margin: 0 0 16px;
+      letter-spacing:.3px;
+    }
+    .headline p{ color: var(--muted); font-size: clamp(16px, 1.8vw, 18px); margin: 0 0 20px }
+    .btn-row{ display:flex; gap: 12px; flex-wrap: wrap }
+    .btn{
+      display:inline-flex; align-items:center; gap: 10px; padding: 12px 16px; border-radius: 12px; font-weight:700;
+      border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06); box-shadow: var(--shadow);
+      transform: translateZ(20px); transition: .25s ease transform, .25s ease filter;
+    }
+    .btn:hover{ transform: translateZ(24px) translateY(-2px) }
+
+    /* 3D Plate Scene */
+    .scene{
+      position:relative; width: min(520px, 78vw); height: min(520px, 78vw); margin:auto;
+      transform-style: preserve-3d; perspective: var(--perspective);
+    }
+    .stage{ position:absolute; inset:0; transform-style:preserve-3d;}
+
+    /* Plate base */
+    
+
+    /* Food blob (as layered gradients) */
+    .food{
+     /* Food blob replaced with biryani image */
+
+  position:absolute; 
+  left:21%; top:21%; right:21%; bottom:21%; 
+  border-radius:100%;
+  background: url('bir1.jpeg') center/cover no-repeat;
+  box-shadow: inset 0 6px 14px rgba(0,0,0,.35);
+  transform: translateZ(14px);
+
+
+    }
+
+    /* Steam */
+    .steam{ position:absolute; left:50%; top:10%; width:10px; height:10px; transform: translateX(-50%) translateZ(20px); }
+    .steam span{
+      position:absolute; left:0; top:0; width: 12px; height: 12px; border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,255,255,.8), rgba(255,255,255,.0) 70%);
+      filter: blur(2px); opacity:.8; animation: rise 4s ease-in infinite;
+    }
+    .steam span:nth-child(2){ animation-delay: .6s; }
+    .steam span:nth-child(3){ animation-delay: 1.3s; }
+    @keyframes rise{
+      from{ transform: translate(-10px, 10px) scale(.5); opacity:.0 }
+      40%{ opacity:.8 }
+      to{ transform: translate(10px, -120px) scale(1.8); opacity:.0 }
+    }
+
+    /* Floating garnish chips */
+    .chip{
+     
+    }
+    .chip::after{ content:""; position:absolute; inset:0; border-radius:6px; border:1px dashed rgba(0,0,0,.15)}
+    .chip:nth-child(1){ left: 20%; top: 30%; animation-delay: 0s}
+    .chip:nth-child(2){ left: 62%; top: 22%; animation-delay: 1.2s}
+    .chip:nth-child(3){ left: 70%; top: 60%; animation-delay: 2.0s}
+    .chip:nth-child(4){ left: 28%; top: 65%; animation-delay: 3.2s}
+    @keyframes chip{ 0%,100%{ transform: translateZ(24px) translateY(0)} 50%{ transform: translateZ(24px) translateY(-14px)} }
+
+    /* 3D room (table) */
+    .room{ position:absolute; inset:0; transform-style:preserve-3d; pointer-events:none }
+    .floor, .wall{
+      position:absolute; background: repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 2px, transparent 2px 80px),
+                  linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.2));
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .floor{ width:2200px; height:2200px; left:50%; transform: translateX(-50%) rotateX(90deg) translateZ(-200px); border-radius: 16px; filter: blur(.2px)}
+    .wall{ width:2200px; height:1100px; left:50%; transform: translateX(-50%) translateZ(-900px); border-radius: 16px; opacity:.7 }
+
+    /* =====================  Section: Specials Carousel (3D)  ===================== */
+    .section{ position:relative; padding: 80px 0 }
+    .section h2{ font-family: "DM Serif Display", serif; font-size: clamp(28px, 4.5vw, 54px); margin: 0 0 12px }
+    .section p.lead{ color: var(--muted); margin: 0 0 24px }
+
+    .carousel3d{ perspective: 1400px; transform-style:preserve-3d; position:relative; height: 440px; margin-top: 16px; }
+    .ring{ width:100%; height:100%; position:absolute; transform-style:preserve-3d; transition: transform 1s cubic-bezier(.2,.6,.1,1);
+      will-change: transform }
+    .tile{
+      position:absolute; top:50%; left:50%; width: 310px; height: 360px; transform-style:preserve-3d;
+      margin: -180px -155px; border-radius: var(--radius); overflow:hidden;
+      background: var(--glass-2); border:1px solid rgba(255,255,255,.12); box-shadow: var(--shadow);
+    }
+    .tile .photo { position:absolute; inset:0; background-size: contain; background-repeat:no-repeat; background-position: center; filter: saturate(1.1); }
+    .tile .overlay{ position:absolute; inset:auto 0 0 0; padding:16px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.75)); }
+    .tile h3{ margin:0 0 4px; font-size: 20px }
+    .tile .meta{ color: var(--muted); font-size: 14px }
+
+
+    .carousel-controls{ display:flex; gap: 10px; margin-top: 14px }
+    .ghost-btn{
+      display:inline-flex; align-items:center; gap: 8px; padding: 10px 14px; border-radius: 12px; font-weight:700; font-size:14px;
+      border:1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.04); box-shadow: var(--shadow);
+      cursor:pointer; user-select:none; transition: .25s ease transform;
+    }
+    .ghost-btn:active{ transform: translateY(1px) }
+
+    /* =====================  Section: Menu Flip Cards  ===================== */
+    .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 20px }
+    @media (max-width: 950px){ .hero .wrap{ grid-template-columns: 1fr } .grid{ grid-template-columns: 1fr 1fr } }
+    @media (max-width: 640px){ .grid{ grid-template-columns: 1fr } }
+
+    .flip{
+      perspective: 1400px; transform-style:preserve-3d; height: 260px; position:relative;
+    }
+    .flip-inner{
+      position:absolute; inset:0; transform-style:preserve-3d; transition: transform .8s cubic-bezier(.2,.7,.1,1);
+    }
+    .flip:hover .flip-inner{ transform: rotateY(180deg) }
+
+    .card-face{
+      position:absolute; inset:0; border-radius: var(--radius); overflow:hidden; backface-visibility:hidden;
+      background: var(--glass-2); border: 1px solid rgba(255,255,255,.12); box-shadow: var(--shadow);
+      display:flex; flex-direction:column; justify-content:flex-end; padding: 16px;
+    }
+    .card-face.front{ background-size:300px 200px ; background-repeat:no-repeat; background-position:center; }
+    .card-face.back{ transform: rotateY(180deg); gap: 6px; }
+    .price{ font-weight:800; color: var(--accent); font-size: 20px }
+
+    /* =====================  Reservation Card (3D tilt)  ===================== */
+    .reserve{ margin-top: 20px; display:grid; grid-template-columns: 1fr 1fr; gap: 20px }
+    @media (max-width: 900px){ .reserve{ grid-template-columns: 1fr } }
+    .res-card{
+      position:relative; padding: 20px; border-radius: var(--radius); background: var(--glass);
+      border: 1px solid rgba(255,255,255,.12); box-shadow: var(--shadow);
+      transform-style: preserve-3d; transition: transform .2s ease; will-change: transform; overflow:hidden;
+    }
+    .res-card h3{ margin: 0 0 8px; font-size: 24px; font-family: "DM Serif Display", serif }
+    .res-card p{ margin: 0 0 12px; color: var(--muted) }
+
+    .input{ width:100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.03); color: var(--ink) }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px }
+    .submit{ padding: 12px 16px; border-radius: 12px; font-weight: 800; border: 1px solid rgba(255,255,255,.15); background: linear-gradient(180deg, rgba(224,178,107,.35), rgba(224,178,107,.15)); color:#2a1b0a }
+
+    /* =====================  Gallery Section  ===================== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    
+    }
+
+    .gallery-item {
+      aspect-ratio: 1/1;
+      border-radius: var(--radius);
+      background-size: 340px 250px;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .gallery-item:hover {
+      transform: translateZ(10px) scale(1.03);
+    }
+
+    /* =====================  Team Section  ===================== */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .team-member {
+      text-align: center;
+    }
+
+    .member-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      background-size: cover;
+      background-position: center;
+      border: 3px solid var(--accent);
+    }
+
+    /* =====================  Footer  ===================== */
+    footer{ padding: 60px 0; color: var(--muted) }
+    .dimmer{ opacity:.5 }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /*  Utilities */
+    .badge{ display:inline-flex; align-items:center; gap:8px; padding: 8px 10px; border-radius: 999px; background: rgba(224,178,107,.14); color: #f4e0bf; border:1px solid rgba(224,178,107,.35); font-weight:700; font-size: 12px; letter-spacing:.3px }
+    .logo{
+        width:70px;
+        border-radius:100%;
+        margin-right:10px;
+    }
+    .gallery-item em{
+      color:var(--accent);
+    
+    }
+  </style>
+</head>
+<body>
+  <!-- ================= Nav ================= -->
+    
+  <div class="nav">
+    <strong><img src="Rafaha(2).jpg" class="logo" alt="">RAFAH Mandhi & Briyani</strong>
+    <div class="nav-inner wrap">
+      <a class="brand" href="#">
+        
+      </a>
+      <span style="flex:1"></span>
+      <a href="#specials" class="link">Specials</a>
+      <a href="#menu" class="link">Menu</a>
+     
+      <a href="#reserve" class="link">Reserve</a>
+      <a href="#contact" class="link cta-btn">Contact</a>
+    </div>
+  </div>
+
+  <!-- ================= Hero ================= -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="room">
+      <div class="floor"></div>
+      <div class="wall"></div>
+    </div>
+
+    <div class="wrap">
+      <div class="headline" id="tilt">
+       
+        <h1>Food is the ingredient that <em style="color:var(--accent)">binds us</em> together.</h1>
+        <p>Discover the taste of tradition with a modern touch. Every dish is prepared with love, bringing people closer one bite at a time. meaning in tamil</p>
+        <div class="btn-row">
+          <a class="btn" href="#specials">View Specials</a>
+          <a class="btn" href="#reserve">Book a Table</a>
+        </div>
+      </div>
+
+      <div class="scene" aria-hidden="true">
+        <div class="stage">
+          <div class="plate">
+            <div class="rim"></div>
+            <div class="well"></div>
+            <div class="food"></div>
+            <div class="steam"><span></span><span></span><span></span></div>
+            <div class="chip"></div>
+            <div class="chip"></div>
+            <div class="chip"></div>
+            <div class="chip"></div>
+            <div class="vertical-piece"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Specials (3D Carousel) ================= -->
+  <section id="specials" class="section">
+    <div class="wrap">
+      <h2>Tonight's Specials</h2>
+      <p class="lead">Scroll or drag to spin the Special Dishes.</p>
+
+      <div class="carousel3d" id="carousel">
+        <div class="ring" id="ring">
+        
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <div class="ghost-btn" id="prev">⟵ Prev</div>
+        <div class="ghost-btn" id="next">Next ⟶</div>
+        <div class="ghost-btn" id="pause">Pause</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Menu (Flip Cards) ================= -->
+  <section id="menu" class="section">
+    <div class="wrap">
+      <h2>The Menu</h2>
+      <p class="lead">Hover a card to flip for description & price. Add, remove, or duplicate cards easily.</p>
+
+      <div class="grid">
+        <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('whitericesambarrice.png');">
+              <div class="overlay">
+               
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:15px;">White rice, sambar rice, cauliflower kootu, chicken sixty-five, and buttermilk</h3>
+              <p>Traditional South Indian meal with rice varieties, spicy chicken 65, and cooling buttermilk.</p>
+              <div class="price">₹130</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('rice3 (2).png'); ">
+              <div class="overlay">
+               
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:15px;">White rice with fish curry, fried fish, spinach curry, and buttermilk</h3>
+              <p>White rice served with fish curry, crispy fried fish, spinach curry, and refreshing buttermilk</p>
+              <div class="price">₹130</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('podulaikootu.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:20px;">White Rice,Rasam,Snake Gourd Kootu,Egg stir-Fry,Buttermilk</h3>
+              <p>Relish a wholesome South Indian meal with white rice, tangy rasam, pudalai kootu, spicy muttai poriyal, and refreshing buttermilk</p>
+              <div class="price">₹100</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('vaalaikaaiporiyal.jpg');">
+              <div class="overlay">
+               
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:38px;">White Rice,Sambar,Raw Banana Fry,Beans & Carrot Stir-fry,Appalam,Buttermilk</h3>
+              <p style="position:relative; top:10px;">Enjoy a wholesome South Indian meal with white rice, sambar, vaalaikai poriyal, beans & carrot poriyal, crispy appalam, and refreshing buttermilk</p>
+              <div class="price">₹100</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('parupaanam.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:38px;">White Rice,Lentil curry,Potato fry,Egg,Appalam,Buttermilk</h3>
+              <p style="position:relative; top:10px;">Enjoy a wholesome South Indian meal with white rice, paruppu annam (dal rice), urulai poriyal (potato stir-fry), muttai (egg), crispy appalam, and refreshing buttermilk</p>
+              <div class="price">₹100</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('friedfishrice.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:38px;">White Rice,Fish Curry,Fried Fish,Lady's Finger Stir-fry,Buttermilk</h3>
+              <p style="position:relative; top:10px;">Enjoy a traditional South Indian meal with white rice, flavorful meen kulambu, crispy meen poriyal, tasty vendakkai poriyal, and refreshing buttermilk.</p>
+              <div class="price">₹130</div>
+            </div>
+          </div>
+        </div>
+
+         <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('white rice,sambar,cha kilangu poriyal malli ,pudhina thuvaiyal,buttermilk generate image in 4k quality 300x200.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:38px;">White Rice, Sambar, Colocasia Fry with Coriander, Mint Chutney, Buttermilk</h3>
+              <p style="position:relative; top:10px;">White rice with sambar, potato fry with coriander, mint chutney, and buttermilk – a wholesome South Indian meal.</p>
+              <div class="price">₹100</div>
+            </div>
+          </div>
+        </div>
+
+         <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('White rice, fish curry, fried fish, fish poriyal, and buttermilk generate image in 4k quality in full image.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative;">White rice, fish curry, fried fish, fish poriyal, and buttermilk</h3>
+              <p style="position:relative; top:10px;">White rice with fish curry, fried fish, side poriyal, and refreshing buttermilk</p>
+              <div class="price">₹130</div>
+            </div>
+          </div>
+        </div>
+
+         <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('Chicken Biryani with Egg Raita generate image in 4k quality in 300x200.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:-20px;">Chicken Biryani with Egg Raita</h3>
+              <p style="position:relative; top:-10px;">A plate of chicken biryani with muttai raitha – happiness served in every bite</p>
+              <div class="price">₹120</div>
+            </div>
+          </div>
+        </div>
+
+         <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('White Rice, Sambar, Velameen Sibiya (fish curry), Beans & Carrot Poriyal, Buttermilk generate image in 4k quality in 300x200.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:38px;">White Rice, Sambar, Velameen Sibiya (fish curry), Beans & Carrot Poriyal, Buttermilk</h3>
+              <p style="position:relative; top:10px;">A wholesome meal of white rice, sambar, fish fry, beans-carrot poriyal, and buttermilk — comfort on a plate</p>
+              <div class="price">₹120</div>
+            </div>
+          </div>
+        </div>
+
+         <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('Pulao Rice with Chicken Gravy, Chicken 65, and Raita generate image in 4k quality in 300x200.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative;">Pulao Rice with Chicken Gravy, Chicken 65, and Raita</h3>
+              <p style="position:relative; ">Pulavurice with chicken gravy, crispy Chicken 65, and cool raita — a perfect feast on one plate</p>
+              <div class="price">₹150</div>
+            </div>
+          </div>
+        </div>
+
+         <div class="flip">
+          <div class="flip-inner">
+            <div class="card-face front" style="background-image: url('White rice, sambar, potato fry, egg, and buttermilk generate image in 4k quality in 300x200.jpg');">
+              <div class="overlay">
+                
+              </div>
+            </div>
+            <div class="card-face back">
+              <h3 style="position:relative; top:38px;">White rice, sambar, potato fry, egg, and buttermilk</h3>
+              <p style="position:relative; top:10px;">Comfort on a plate – white rice, sambar, potato stir-fry, egg, and soothing buttermilk</p>
+              <div class="price">₹100</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Gallery Section ================= -->
+  
+
+  <!-- ================= Team Section ================= -->
+  
+
+  <!-- ================= Reservation Section ================= -->
+  <section id="reserve" class="section">
+    <div class="wrap">
+      <h2>Reserve Your Table</h2>
+      <p class="lead">Enjoy a 3D dining experience. Book in seconds below.</p>
+
+      <div class="reserve">
+        <div class="res-card" id="tilt-card">
+          <h3>Book a Table</h3>
+          <p>Fill out the form and we’ll confirm your reservation via email.</p>
+          <form id="reserveForm">
+            <div class="row">
+              <input type="text" class="input" placeholder="Your Name" name="name" required>
+              <input type="address" class="input" placeholder="Your Address" name="address" required>
+            </div>
+            
+            
+             <input 
+                  type="tel" 
+                  class="input" 
+                  name="phone" 
+                  placeholder="+91 9876543210" 
+                  pattern="^\+91[6-9]\d{9}$" 
+                  required>
+            <button type="submit" class="submit">Reserve Now</button>
+          </form>
+        </div>
+
+        <div class="res-card">
+          <h3>Opening Hours</h3>
+          <p>Mon – Fri: 12:00 PM – 11:00 PM</p>
+          <p>Sat – Sun: 1:00 PM – 12:00 AM</p>
+          <h3>Location</h3>
+          <p>123 Culinary Street, Food City</p>
+          <p>Call us: +91 98765 43210</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Footer ================= -->
+  <footer id="contact">
+    <div class="wrap">
+      <h2>Contact Us</h2>
+      <p>Email: hello@rafahrestaurant.com | Phone: +91 98765 43210</p>
+      <p class="dimmer">© 2025 Rafah Restaurant. Crafted with ❤️ in pure HTML, CSS, and JavaScript.</p>
+    </div>
+  </footer>
+
+  <!-- ================= Scripts ================= -->
+  <script>
+    // 3D Carousel
+    const ring = document.getElementById("ring");
+    const numTiles = 7;
+    const angle = 360 / numTiles;
+    let currRotation = 0, autoSpin = true;
+
+    // Create tiles
+    const dishes = [
+      { title: "Chicken Sharwama",meta:"Juicy,Spiced & Flavorful Middle Eastern wrap", img: "sharwama.avif" },
+      { title: "Chicken Nuggets", meta: "Perfect Snack & Meal", img: "chickenuggets.png" },
+      { title: "Mandi", meta: "Taste the Flavors of Arabia", img: "mandi.avif" },
+      { title: "Veg Meals", meta: "Healthy & Tasty Vegetarian Delights", img: "vegmeals2.avif" },
+      { title: "Non-Veg Meals", meta: "Spicy, Flavorful & Homemade Style", img: "nonvegmeals.jpg" },
+      { title: "Chicken-Biriyani", meta: "Taste the Royal Flavors", img: "ckbir.jpg" },
+      { title: "Chicken-patty-Burger", meta: "Crispy Chicken Burger | Best Fast Food Choice", img: "chicken patty burger image generate in 4k quality.jpg" },
+    ];
+
+    dishes.forEach((dish, i) => {
+      const tile = document.createElement("div");
+      tile.className = "tile";
+      tile.style.transform = `rotateY(${i * angle}deg) translateZ(500px)`;
+      tile.innerHTML = `
+        <div class="photo" style="background-image:url('${dish.img}')"></div>
+        <div class="overlay">
+          <h3>${dish.title}</h3>
+          <div class="meta">${dish.meta}</div>
+        </div>`;
+      ring.appendChild(tile);
+    });
+
+    function rotateCarousel(dir=1){
+      currRotation += angle * dir;
+      ring.style.transform = `translateZ(-500px) rotateY(${currRotation}deg)`;
+    }
+
+    document.getElementById("next").onclick = () => rotateCarousel(-1);
+    document.getElementById("prev").onclick = () => rotateCarousel(1);
+    document.getElementById("pause").onclick = () => autoSpin = !autoSpin;
+
+    setInterval(() => { if(autoSpin) rotateCarousel(-1); }, 4000);
+
+    // 3D Tilt effect
+    const tilt = document.getElementById("tilt");
+    document.addEventListener("mousemove", (e) => {
+      const x = (window.innerWidth / 2 - e.pageX) / 60;
+      const y = (window.innerHeight / 2 - e.pageY) / 60;
+      tilt.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    });
+    // Form submission handler
+    document.getElementById("reserveForm").addEventListener("submit", async function(e){
+      e.preventDefault(); // Prevent default form submission
+      console.log("Form submitted");
+      
+      // Get form data
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      console.log("Form data:", data);
+      
+      try {
+        // Send data to backend
+        const res = await fetch("http://localhost:5000/send-sms", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        
+        console.log("Response status:", res.status);
+        
+        // Parse response
+        const result = await res.json();
+        console.log("Response data:", result);
+        
+        // Show success message with owner contact info
+        alert(`${result.message}\n\nFor any questions, contact:\n${result.ownerContact.name}: ${result.ownerContact.phone}`);
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("Failed to submit reservation. Please try again.");
+      }
+    });
+
+
+  </script>
+</body>
+</html>
+
